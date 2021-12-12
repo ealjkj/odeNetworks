@@ -4,7 +4,7 @@ import copy
 import time
 import matplotlib.pyplot as plt
 
-def train_model(model, criterion, optimizer, scheduler, num_epochs=25, datasets_list, dataloaders_list):
+def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_list, dataloaders_list):
     
     train_dataset = datasets_list[0]
     test_dataset = datasets_list[1]
@@ -130,14 +130,6 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25, datasets_
 
     return model
 
-# Decay LR by a factor of 0.1 every 7 epochs
-exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
-
-dataloaders = {'train': train_loader, 'val': test_loader}
-dataset_sizes  = {'train': len(train_dataset), 'val': len(test_dataset)}
-
-model = train_model(model, criterion, optimizer, exp_lr_scheduler,
-                       num_epochs=num_epochs)
 
 
                                       
