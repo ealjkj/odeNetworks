@@ -132,4 +132,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_lis
 
 
 
-                                      
+# For updating learning rate
+def update_lr(optimizer, lr):    
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr
