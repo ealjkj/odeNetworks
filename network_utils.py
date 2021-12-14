@@ -3,14 +3,16 @@ from torch.optim import lr_scheduler
 import copy
 import time
 import matplotlib.pyplot as plt
+import torch
 
 def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_list, dataloaders_list):
-    
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
     train_dataset = datasets_list[0]
     test_dataset = datasets_list[1]
 
-    train_dataloader = dataloaders_list[0]
-    test_dataloader = dataloaders_list[1]
+    train_loader = dataloaders_list[0]
+    test_loader = dataloaders_list[1]
 
     dataloaders = {'train': train_loader, 'val': test_loader}
     dataset_sizes  = {'train': len(train_dataset), 'val': len(test_dataset)}
