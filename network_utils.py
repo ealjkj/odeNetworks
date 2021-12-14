@@ -92,14 +92,14 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_lis
         time_elapsed // 60, time_elapsed % 60))
     print('Best val Acc: {:4f}'.format(best_acc))
 
-    # load best model weights
-    model.load_state_dict(best_model_wts)
-    torch.save({
-            'epoch': epoch,
-            'model_state_dict': model.state_dict(),
-            'optimizer_state_dict': optimizer.state_dict(),
-            'loss': loss,
-            }, '/content/gdrive/MyDrive/DATASETS/Polen/outputs/model.pth')
+    # # load best model weights
+    # model.load_state_dict(best_model_wts)
+    # torch.save({
+    #         'epoch': epoch,
+    #         'model_state_dict': model.state_dict(),
+    #         'optimizer_state_dict': optimizer.state_dict(),
+    #         'loss': loss,
+    #         }, '/content/gdrive/MyDrive/DATASETS/Polen/outputs/model.pth')
 
     # #Plot acc and val
     # fig, axs = plt.subplots(2, 2)
