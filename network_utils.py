@@ -1,13 +1,14 @@
 import numpy as np
+from numpy.core.function_base import _logspace_dispatcher
+from torch.cuda import device_of
 from torch.optim import lr_scheduler
 import copy
 import time
 import matplotlib.pyplot as plt
 import torch
-
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_list, dataloaders_list):
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
+    
     train_dataset = datasets_list[0]
     test_dataset = datasets_list[1]
 
@@ -130,11 +131,61 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_lis
 
     plt.show()
 
-    return model
-
-
 
 # For updating learning rate
 def update_lr(optimizer, lr):    
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
+
+
+def results(model, loader):
+    with torch.no_grad():
+        correct = 0
+        total = 0
+        test_counter = [0]*4
+        all_preds = torch.tensor([]).cuda()
+        for images, labels in loader:
+            images = images.to(device)
+            labels = labels.to(device)
+            outputs = model(images)
+            all_preds = torch.cat((all_preds, outputs),dim=0)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+            for idx in range(4):
+                test_counter[idx] += (labels == idx).sum().item()
+        
+        accuracy = 100 * correct / total
+            
+    print('Accuracy of the model on the test images: {} %'.format(100 * correct / total))
+    print(test_counter)
+
+
+
+def find_miss_classifications(model, loader):
+    with torch.no_grad():
+        all_preds = torch.tensor([]).to(device)
+        all_labels = torch.tensor([]).to(device)
+        counter = 0
+        for batch in loader:
+            images, labels = batch
+            images = images.to(device)
+            labels = labels.to(device)
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+
+            all_preds = torch.cat(
+                (all_preds, predicted)
+                ,dim=0
+            )
+
+            all_labels = torch.cat(
+                (all_labels, labels)
+                ,dim=0
+            )
+            v = ~all_preds.eq(all_labels)
+            indices = torch.tensor(range(len(v)))[v]
+            all_preds = all_preds[v]
+        
+    return indices, all_preds
+
