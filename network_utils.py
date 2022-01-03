@@ -138,11 +138,11 @@ def update_lr(optimizer, lr):
         param_group['lr'] = lr
 
 
-def results(model, loader):
+def results(model, loader, num_classes):
     with torch.no_grad():
         correct = 0
         total = 0
-        test_counter = [0]*4
+        test_counter = [0]*num_classes
         all_preds = torch.tensor([]).cuda()
         for images, labels in loader:
             images = images.to(device)
@@ -152,7 +152,7 @@ def results(model, loader):
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
-            for idx in range(4):
+            for idx in range(num_classes):
                 test_counter[idx] += (labels == idx).sum().item()
         
         accuracy = 100 * correct / total
@@ -162,7 +162,7 @@ def results(model, loader):
 
 
 
-def find_miss_classifications(model, loader):
+def find_miss_classifications(model, loader, testset, label_names):
     with torch.no_grad():
         all_preds = torch.tensor([]).to(device)
         all_labels = torch.tensor([]).to(device)
@@ -183,9 +183,27 @@ def find_miss_classifications(model, loader):
                 (all_labels, labels)
                 ,dim=0
             )
-            v = ~all_preds.eq(all_labels)
-            indices = torch.tensor(range(len(v)))[v]
-            all_preds = all_preds[v]
-        
-    return indices, all_preds
+
+        v = ~all_preds.eq(all_labels)
+        indices = torch.tensor(range(len(v)))[v]
+        all_preds = all_preds[v]
+        all_labels = all_labels[v]
+
+    f, axarr = plt.subplots(3,3)
+    f.set_size_inches(8, 8)
+    f.tight_layout(pad=3.0)
+
+    for i in range(3):
+        for j in range(3):
+            idx = indices[i*3 + j]
+            img = testset[idx.item()][0].permute(1, 2, 0)
+            correct_label = testset[idx.item()][1]
+            incorrect_prediction = int(all_preds[idx.item()].item())
+            axarr[i,j].imshow(img)   
+            axarr[i,j].set_xlabel(label_names[correct_label], fontsize=16, color = 'green', fontfamily="sans-serif")
+            axarr[i,j].set_ylabel(label_names[incorrect_prediction], fontsize = 16, color = 'red')
+            axarr[i,j].set_xticks([])
+            axarr[i,j].set_yticks([])
+
+    plt.show()
 
