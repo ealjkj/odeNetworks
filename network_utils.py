@@ -207,3 +207,9 @@ def find_miss_classifications(model, loader, testset, label_names):
 
     plt.show()
 
+
+def apply_noise(img_arr, sigma = 0.1):
+    mean = 0
+    noise = torch.tensor(np.random.normal(mean, sigma, img_arr.shape))
+    return img_arr + noise
+
