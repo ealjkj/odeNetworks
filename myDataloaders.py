@@ -9,10 +9,10 @@ class subDataset(Dataset):
         self.alpha = alpha
 
     def __len__(self):
-        return int(self.alpha*len(pretrainset))
+        return int(self.alpha*len(self.dataset))
 
     def __getitem__(self, i):
-        return dataset[i]
+        return self.dataset[i]
 
 
 class NoisySet(Dataset):
@@ -20,7 +20,11 @@ class NoisySet(Dataset):
         self.sigma = sigma
         self.data = []
         for i in range(len(dataset)):
-            self.data.append((self.apply_noise(dataset[i][0], sigma=self.sigma), dataset[i][1]))
+            original_img = dataset[i][0] 
+            label = dataset[i][1] 
+            new_img = self.apply_noise(original_img, sigma=self.sigma)
+
+            self.data.append((new_img, label))
         
     def __len__(self):
         return len(pretestset)//100
@@ -28,7 +32,7 @@ class NoisySet(Dataset):
     def __getitem__(self, i):
         return self.data[i]
 
-    def apply_noise(img_arr, sigma = 0.1):
+    def apply_noise(self, img_arr, sigma = 0.1):
         mean = 0
         noise = torch.tensor(np.random.normal(mean, sigma, img_arr.shape), dtype=torch.float)
         return img_arr + noise
