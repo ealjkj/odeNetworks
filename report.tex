@@ -20,7 +20,6 @@
 \renewcommand{\baselinestretch}{1.5}
 \usepackage{cite}
 \usepackage{hyperref}
-\usepackage{booktabs}
 
 %% NEW Comands
 \newcommand{\R}{\mathbb R}  
@@ -38,7 +37,7 @@
 \section{Main Result}
 \begin{figure}[H]
     \centering
-    \includegraphics[width = 4in]{../src/acc_plot.png}
+    \includegraphics[width = 4in]{src/acc_plot.png}
 \end{figure}
 \begin{center}
     \large {Best test accuracy: \textbf{---testAccuracy}} \\
@@ -48,43 +47,28 @@
 \section{Parameters}
 \subsection{Net Parameters}
 
-\begin{table}[H]
-    \centering
     ---netParameters
-\end{table}
-    
-    
+
 \subsection{Dataset Parameters}
-\begin{table}[H]
-    \centering
+
     ---datasetParameters
-\end{table}
 
 \subsection{Training Parameters}
-\begin{table}[H]
-    \centering
+
     ---trainingParameters
-\end{table}
-
-
 
 %------------------------------------- Results
 \section{Results}
 \subsection{Performance}
-\begin{table}[H]
-    \centering
-        ---performanceTable
-\end{table}
+---performanceTable
 \subsection{Confusion Matrix}
 \begin{figure}[H]
     \centering
     % \includegraphics[width = 4in]{src/confusion.png}
 \end{figure}
 \subsection{Stability}
-\begin{table}[H]
-    \centering
+
     ---noiseTable
-\end{table}  
 
 
 \subsection{Miss classifications}

@@ -1,0 +1,5 @@
+PWD c:/Users/Jorch/Documents/odeNetworks/reportTemplate
+INPUT c:/texlive/2019/texmf.cnf
+INPUT c:/texlive/2019/texmf-dist/web2c/texmf.cnf
+INPUT c:/texlive/2019/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT c:/Users/Jorch/Documents/odeNetworks/reportTemplate/report.tex

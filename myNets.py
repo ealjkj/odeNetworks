@@ -3,6 +3,21 @@ from torch import nn
 from torch.nn.modules.conv import Conv2d
 
 
+class Func(nn.Module):
+    def __init__(self, in_ch, out_ch, initial_stride=1):
+        super(Func, self).__init__()
+        self.conv1 = nn.Conv2d(in_ch, out_ch, kernel_size=3, stride=initial_stride, padding=1)
+        self.bn1 = nn.BatchNorm2d(out_ch)
+        self.act1 = nn.ReLU()
+        self.conv2 = nn.Conv2d(out_ch, out_ch, kernel_size=3, padding=1)
+        self.bn2 = nn.BatchNorm2d(out_ch)
+
+    def forward(self, x):
+        out = self.act1(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(out))
+        return out
+
+        
 def downsample(in_channels, out_channels, stride):
     return nn.Sequential(
                 Conv2d(in_channels, out_channels, kernel_size=1, stride=stride),
