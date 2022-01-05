@@ -157,8 +157,7 @@ def results(model, loader, num_classes):
         
         accuracy = 100 * correct / total
             
-    print('Accuracy of the model on the test images: {} %'.format(100 * correct / total))
-    print(test_counter)
+    return accuracy
 
 
 
@@ -210,6 +209,6 @@ def find_miss_classifications(model, loader, testset, label_names):
 
 def apply_noise(img_arr, sigma = 0.1):
     mean = 0
-    noise = torch.tensor(np.random.normal(mean, sigma, img_arr.shape))
+    noise = torch.tensor(np.random.normal(mean, sigma, img_arr.shape), dtype=torch.float)
     return img_arr + noise
 
