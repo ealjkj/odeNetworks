@@ -25,9 +25,9 @@ def downsample(in_channels, out_channels, stride):
             )
 
 class RKBlock(nn.Module):
-    def __init__(self, in_channels, out_channels, down=None, initial_stride=1):
+    def __init__(self, in_channels, out_channels, down=None, h = 1, initial_stride=1):
         super(RKBlock, self).__init__()
-        self.h = 1
+        self.h = h
         self.down = down
         self.block0 = Func(in_channels, out_channels, initial_stride=initial_stride)
         self.block1 = Func(out_channels, out_channels)
@@ -107,7 +107,9 @@ class rkNet(nn.Module):
         super(rkNet, self).__init__()
         self.name = rkNet
         self.depth = 49
-        
+        self.h = 1
+
+
         self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
@@ -117,14 +119,14 @@ class rkNet(nn.Module):
         self.down128to256 = downsample(128, 256, stride=2)
         self.down256to512 = downsample(256, 512, stride=2)
 
-        self.layer1 = RKBlock(64, 64)
-        self.layer2 = RKBlock(64, 128, self.down64to128, initial_stride = 2)
-        self.layer3 = RKBlock(128, 256, self.down128to256, initial_stride = 2)
-        # self.layer4 = RKBlock(256, 512, self.down256to512, initial_stride = 2)
+        self.layer1 = RKBlock(64, 64, h=1)
+        self.layer2 = RKBlock(64, 128, self.down64to128, h=1, initial_stride = 2)
+        self.layer3 = RKBlock(128, 256, self.down128to256, h=1, initial_stride = 2)
+        self.layer4 = RKBlock(256, 512, self.down256to512, h=1, initial_stride = 2)
 
         
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = nn.Linear(256, num_classes)
+        self.fc = nn.Linear(512, num_classes)
         self.act = nn.ReLU()
 
     def forward(self, x):
@@ -138,6 +140,7 @@ class rkNet(nn.Module):
         out = self.layer1(out)
         out = self.layer2(out)
         out = self.layer3(out)
+        out = self.layer4(out)
 
         # FCN
         out = self.avgpool(out)
