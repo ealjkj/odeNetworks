@@ -105,7 +105,7 @@ class RKBlock(nn.Module):
 class rkNet(nn.Module):
     def __init__(self, num_classes=10):
         super(rkNet, self).__init__()
-        self.name = rkNet
+        self.name = 'rkNet'
         self.depth = 49
         self.h = 1
 
