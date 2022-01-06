@@ -281,7 +281,7 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
     else:
         print('Confusion matrix, without normalization')
 
-    print(cm)
+    plt.figure(figsize=(6,6))
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.title(title)
     plt.colorbar()
@@ -300,5 +300,29 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
     
     if export_name is not None:
         plt.savefig(export_name)
-    plt.show()
+
+
+def get_metrics(cmt):
+    results = {}
+    num_classes = cmt.shape[0]
+    scores = np.zeros((num_classes, 3))
+    test_counter = np.array([cmt[i,:].sum() for i in range(cmt.shape[0])])
+    pre_acc = 0
+    for i in range(num_classes):
+        precision = cmt[i,i]/cmt[i,:].sum() 
+        recall = cmt[i,i]/cmt[:,i].sum() if cmt[:,i].sum() != 0 else 0 
+        f1score = 2*precision*recall/(precision + recall) if precision + recall != 0 else 0
+        scores[i,:] = [precision, recall, f1score]
+        pre_acc += cmt[i,i]
+
+    results['accuracy'] = pre_acc/cmt.sum()
+    results['macro precision'] = scores[:,0].sum()/num_classes
+    results['macro recall'] = scores[:,1].sum()/num_classes
+    results['macro f1score'] = scores[:,2].sum()/num_classes
     
+    results['weighted precision'] = sum([test_counter[i]*scores[:,0][i] for i in range(4)])/test_counter.sum()
+    results['weighted recall'] = sum([test_counter[i]*scores[:,1][i] for i in range(4)])/test_counter.sum()
+    results['weighted f1score'] = sum([test_counter[i]*scores[:,2][i] for i in range(4)])/test_counter.sum()
+
+
+    return results    
