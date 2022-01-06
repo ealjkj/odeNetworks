@@ -166,7 +166,7 @@ def results(model, loader, num_classes):
 
 
 
-def find_miss_classifications(model, loader, testset, label_names):
+def find_miss_classifications(model, loader, testset, label_names, export_name=None):
     with torch.no_grad():
         all_preds = torch.tensor([]).to(device)
         all_labels = torch.tensor([]).to(device)
@@ -209,6 +209,8 @@ def find_miss_classifications(model, loader, testset, label_names):
             axarr[i,j].set_xticks([])
             axarr[i,j].set_yticks([])
 
+    if export_name is not None:
+        plt.savefig(export_name)
     plt.show()
 
 
