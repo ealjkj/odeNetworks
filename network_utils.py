@@ -7,7 +7,7 @@ import time
 import matplotlib.pyplot as plt
 import torch
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_list, dataloaders_list):
+def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_list, dataloaders_list, export_name=None):
     
     train_dataset = datasets_list[0]
     test_dataset = datasets_list[1]
@@ -129,6 +129,9 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_lis
     plt.xlabel('epochs')
     plt.ylabel('accuracy')
 
+    if export_name is not None:
+        plt.savefig(export_name)
+        
     plt.show()
 
 
@@ -220,5 +223,4 @@ def get_n_params(model):
             nn = nn*s
         pp += nn
     return pp
-
 
