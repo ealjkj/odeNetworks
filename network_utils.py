@@ -224,3 +224,50 @@ def get_n_params(model):
         pp += nn
     return pp
 
+
+def get_all_preds(model, loader):
+    with torch.no_grad():
+        all_preds = torch.tensor([]).to(device)
+        all_labels = torch.tensor([]).to(device)
+        for batch in loader:
+            images, labels = batch
+            images = images.to(device)
+            labels = labels.to(device)
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+
+            all_preds = torch.cat(
+                (all_preds, predicted)
+                ,dim=0
+            )
+
+            all_labels = torch.cat(
+                (all_labels, labels)
+                ,dim=0
+            )
+    return all_preds, all_labels
+
+def get_num_correct(preds, labels):
+    return preds.argmax(dim=1).eq(labels).sum().item()
+
+
+
+def get_cm(model, loader, num_classes):
+    #Matriz de confusión
+    all_preds, all_labels = get_all_preds(model, loader)
+    stacked = torch.stack(
+        (
+            all_labels
+            ,all_preds
+        )
+        ,dim=1
+    )
+
+    cmt = torch.zeros(num_classes,num_classes, dtype=torch.int64)
+
+    for p in stacked:
+        tl, pl =p.tolist()
+        tl, pl = int(tl), int(pl)
+        cmt[tl, pl] = cmt[tl, pl] + 1
+
+    return cmt.numpy()
