@@ -32,17 +32,17 @@
 \begin{document}
 \begin{center}
     \Large{Net Report of  \\
-    \textbf{---netName}}
+    \textbf{---netName (---datasetPercentage)}}
 \end{center}
 
 \section{Main Result}
 \begin{figure}[H]
     \centering
-    \includegraphics[width = 4in]{../src/acc_plot.png}
+    ---accplot
 \end{figure}
 \begin{center}
-    \large {Best test accuracy: \textbf{---testAccuracy}} \\
-    \large {respective train accuracy: ---trainAccuracy} \\
+    \large {Best test accuracy: \textbf{---testAccuracy} ($\%$)} \\
+    \large {respective train accuracy: ---trainAccuracy ($\%$)} \\
 \end{center}
 %------------------------------------- Parameters
 \section{Parameters}
@@ -77,7 +77,11 @@
 \subsection{Confusion Matrix}
 \begin{figure}[H]
     \centering
-    % \includegraphics[width = 4in]{src/confusion.png}
+    ---cm
+\end{figure}
+\begin{figure}[H]
+    \centering
+    ---ncm
 \end{figure}
 \subsection{Stability}
 \begin{table}[H]
@@ -89,7 +93,7 @@
 \subsection{Miss classifications}
 \begin{figure}[H]
     \centering
-    % \includegraphics[width = 4in]{src/missClassifications.png}
+    ---missClassifications
 \end{figure}
 
 
