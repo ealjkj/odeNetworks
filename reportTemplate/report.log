@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2019.10.27)  6 JAN 2022 12:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2019.10.27)  7 JAN 2022 08:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -8,8 +8,8 @@ entering extended mode
 LaTeX2e <2019-10-01> patch level 1
 (c:/texlive/2019/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2019/08/27 v1.4j Standard LaTeX document class
-(c:/texlive/2019/texmf-dist/tex/latex/base/size12.clo
-File: size12.clo 2019/08/27 v1.4j Standard LaTeX file (size option)
+(c:/texlive/2019/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2019/08/27 v1.4j Standard LaTeX file (size option)
 )
 \c@part=\count80
 \c@section=\count81
@@ -852,12 +852,12 @@ LaTeX Info: Redefining \% on input line 32.
 * \topmargin=-1.1381pt
 * \headheight=12.0pt
 * \headsep=25.0pt
-* \topskip=12.0pt
+* \topskip=11.0pt
 * \footskip=30.0pt
-* \marginparwidth=44.0pt
+* \marginparwidth=59.0pt
 * \marginparsep=10.0pt
 * \columnsep=28.45274pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
@@ -925,29 +925,69 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 44.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{c:/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 100.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 100.
+{c:/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 92--92
+[]\T1/cmr/m/n/10.95 macro
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 92--92
+\T1/cmr/m/n/10.95 pre-ci-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 92--92
+[]\T1/cmr/m/n/10.95 macro
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 92--92
+[]\T1/cmr/m/n/10.95 macro
+ []
+
+
+Overfull \hbox (4.74944pt too wide) in paragraph at lines 92--92
+[]\T1/cmr/m/n/10.95 weighted
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 92--92
+\T1/cmr/m/n/10.95 pre-ci-
+ []
+
+
+Overfull \hbox (4.74944pt too wide) in paragraph at lines 92--92
+[]\T1/cmr/m/n/10.95 weighted
+ []
+
+
+Overfull \hbox (4.74944pt too wide) in paragraph at lines 92--93
+[]\T1/cmr/m/n/10.95 weighted
+ []
+
+[2]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 118.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 118.
  (c:/Users/Jorch/Documents/odeNetworks/reportTemplate/report.aux
 LaTeX Info: Redefining \. on input line 24.
 LaTeX Info: Redefining \% on input line 24.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 100.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 100.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 118.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 118.
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: A4E7D9A9F14382376170C481DF825495;584.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 100.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 118.
  ) 
 Here is how much of TeX's memory you used:
- 21917 strings out of 492167
- 384705 string characters out of 6129173
- 435204 words of memory out of 5000000
- 25892 multiletter control sequences out of 15000+600000
- 16377 words of font info for 52 fonts, out of 8000000 for 9000
+ 21944 strings out of 492167
+ 385021 string characters out of 6129173
+ 442213 words of memory out of 5000000
+ 25908 multiletter control sequences out of 15000+600000
+ 20689 words of font info for 67 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 52i,5n,52p,459b,378s stack positions out of 5000i,500n,10000p,200000b,80000s
-{c:/texlive/2019/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}<c:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on c:/Users/Jorch/Documents/odeNetworks/reportTemplate/report.pdf (2 pages, 67821 bytes).
+ 52i,10n,52p,459b,361s stack positions out of 5000i,500n,10000p,200000b,80000s
+{c:/texlive/2019/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}<c:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb><c:/texlive/2019/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb>
+Output written on c:/Users/Jorch/Documents/odeNetworks/reportTemplate/report.pdf (2 pages, 84070 bytes).
 PDF statistics:
  89 PDF objects out of 1000 (max. 8388607)
  78 compressed objects within 1 object stream

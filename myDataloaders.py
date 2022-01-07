@@ -27,7 +27,7 @@ class NoisySet(Dataset):
             self.data.append((new_img, label))
         
     def __len__(self):
-        return len(pretestset)//100
+        return len(self.data)
 
     def __getitem__(self, i):
         return self.data[i]
