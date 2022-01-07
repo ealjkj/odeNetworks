@@ -125,12 +125,24 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_lis
 
     # ploting
     fig, (ax1, ax2) = plt.subplots(1, 2)
-    fig.suptitle('Accuracy an Loss')
-    ax1.plot(x, hist_loss_train, x, hist_loss_val)
-    ax2.plot(x, hist_acc_train, x, hist_acc_val)
-    plt.xlabel('epochs')
-    plt.ylabel('accuracy')
+    fig.tight_layout(pad=3.0)
 
+    fig.suptitle('Accuracy an Loss')
+    # ax1.plot(x, hist_loss_train, x, hist_loss_val)
+    ax1.plot(x, hist_loss_train, label='train')
+    ax1.plot(x, hist_loss_val, label='val')
+    ax1.set_xlabel('epochs')
+    ax1.set_ylabel('loss')
+    ax1.legend()
+
+    # ax2.plot(x, hist_acc_train, x, hist_acc_val)
+    ax2.plot(x, hist_acc_train, label='train')
+    ax2.plot(x, hist_acc_val, label='val')
+    ax2.set_xlabel('epochs')
+    ax2.set_ylabel('accuracy')
+    ax2.legend()
+
+    
     if export_name is not None:
         plt.savefig(export_name)
         
@@ -327,4 +339,4 @@ def get_metrics(cmt):
     results['weighted f1score'] = sum([test_counter[i]*scores[:,2][i] for i in range(4)])/test_counter.sum()
 
 
-    return results    
+    return results
