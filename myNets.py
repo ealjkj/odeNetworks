@@ -201,6 +201,16 @@ class MiddleNet(nn.Module):
         #FCN
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(512, num_classes)
+        
+        #initialize 
+        
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
+            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+
 
     def forward(self, x):
         x1 = self.conv1(x)  #x1: 64x32x32 -> 64x16x16  
@@ -221,10 +231,9 @@ class MiddleNet(nn.Module):
         x2 = self.avgpool(x2)
         x2 = torch.flatten(x2, 1)
         x2 = self.fc(x2)
-
-        
+       
         return x2
-    
+
     def make_layer(self, block, in_channels, out_channels, initial_stride, num_blocks):
 
         #Create downsample instance
