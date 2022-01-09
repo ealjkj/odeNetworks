@@ -17,6 +17,15 @@ class Func(nn.Module):
         out = self.bn2(self.conv2(out))
         return out
 
+class Sequential2(nn.Sequential):
+    def __init__(self, *args):
+        super(Sequential2, self).__init__(*args)
+
+    def forward(self, x, y):
+        for model in self:
+            x,y = model(x,y)
+        return x,y 
+
         
 def downsample(in_channels, out_channels, stride):
     return nn.Sequential(
@@ -148,3 +157,94 @@ class rkNet(nn.Module):
         out = self.fc(out)
 
         return out
+
+
+class MiddleBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, down=None, initial_stride=1, h=1):
+        super(MiddleBlock, self).__init__()
+        self.down = down
+        self.block = Func(in_channels, out_channels, initial_stride=initial_stride)
+        self.act = nn.ReLU()
+        self.h = h
+
+
+    def forward(self, x1, x2):
+        if self.down is not None:
+            x1 = self.down(x1)
+
+        y2 = self.h*self.act(x1 + self.block(x2))
+
+
+        if self.down is not None:
+          x2 = self.down(x2)
+        return x2, y2
+
+class MiddleNet(nn.Module):
+    def __init__(self, in_channels, layers, h=1, num_classes=10):
+        super(MiddleNet, self).__init__()
+
+        self.h  = h
+        self.conv1 = nn.Conv2d(3, in_channels, kernel_size=7, stride=2, padding=3)
+        self.bn1 = nn.BatchNorm2d(in_channels)
+        self.relu = nn.ReLU(inplace=True)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+
+        self.block = Func(in_channels, in_channels)
+        self.act = nn.ReLU()
+
+        #makelayers 
+        self.part1 = self.make_layer(MiddleBlock, in_channels, 64, initial_stride=1, num_blocks = layers[0])
+        self.part2 = self.make_layer(MiddleBlock, 64, 128, initial_stride=2, num_blocks = layers[1])
+        self.part3 = self.make_layer(MiddleBlock, 128, 256, initial_stride=2, num_blocks = layers[2])
+        self.part4 = self.make_layer(MiddleBlock, 256, 512, initial_stride=2, num_blocks = layers[3])
+        
+        #FCN
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.fc = nn.Linear(512, num_classes)
+
+    def forward(self, x):
+        x1 = self.conv1(x)  #x1: 64x32x32 -> 64x16x16  
+        x1 = self.bn1(x1)
+        x1 = self.relu(x1)
+        x1 = self.maxpool(x1)
+
+        x2 = self.block(x1) #x2: 64x16x16-> 64x16x16
+
+        # layers
+        x1, x2 = self.part1(x1,x2)
+        x1, x2 = self.part2(x1,x2)
+        x1, x2 = self.part3(x1,x2)
+        x1, x2 = self.part4(x1,x2)
+            
+        
+        # FCN
+        x2 = self.avgpool(x2)
+        x2 = torch.flatten(x2, 1)
+        x2 = self.fc(x2)
+
+        
+        return x2
+    
+    def make_layer(self, block, in_channels, out_channels, initial_stride, num_blocks):
+
+        #Create downsample instance
+        downsample = None 
+        if initial_stride != 1:
+            downsample = nn.Sequential(
+                Conv2d(in_channels, out_channels, kernel_size=1, stride=initial_stride),
+                nn.BatchNorm2d(out_channels)
+            )
+             
+        # Create Layers list
+        layers = []
+
+        # make first block
+        initial_block = block(in_channels, out_channels, downsample, initial_stride)
+        layers.append(initial_block)
+
+        # create multiple layers
+        for _ in range(1, num_blocks):
+            new_block = block(out_channels, out_channels)
+            layers.append(new_block) 
+        
+        return Sequential2(*layers)
