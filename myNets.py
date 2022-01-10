@@ -166,6 +166,7 @@ class MiddleNet(nn.Module):
 
         #Create downsample instance
         downsample = None 
+        downsample2 = None 
         if initial_stride != 1:
             downsample = nn.Sequential(
                 Conv2d(in_channels, out_channels, kernel_size=1, stride=initial_stride),
