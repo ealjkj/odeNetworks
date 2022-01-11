@@ -96,10 +96,10 @@ class MiddleNet(nn.Module):
         self.act = nn.ReLU()
 
         #makelayers 
-        self.part1 = self.make_layer(MiddleBlock, in_channels, 64, initial_stride=1, num_blocks = layers[0], fun=fun)
-        self.part2 = self.make_layer(MiddleBlock, 64, 128, initial_stride=2, num_blocks = layers[1], fun=fun)
-        self.part3 = self.make_layer(MiddleBlock, 128, 256, initial_stride=2, num_blocks = layers[2], fun=fun)
-        self.part4 = self.make_layer(MiddleBlock, 256, 512, initial_stride=2, num_blocks = layers[3], fun=fun)
+        self.part1 = self.make_layer(MiddleBlock, in_channels, 64, initial_stride=1, num_blocks = layers[0], h=self.h, fun=fun)
+        self.part2 = self.make_layer(MiddleBlock, 64, 128, initial_stride=2, num_blocks = layers[1], h=self.h, fun=fun)
+        self.part3 = self.make_layer(MiddleBlock, 128, 256, initial_stride=2, num_blocks = layers[2], h=self.h, fun=fun)
+        self.part4 = self.make_layer(MiddleBlock, 256, 512, initial_stride=2, num_blocks = layers[3], h=self.h, fun=fun)
         
         #FCN
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
@@ -137,7 +137,7 @@ class MiddleNet(nn.Module):
        
         return x2
 
-    def make_layer(self, block, in_channels, out_channels, initial_stride, num_blocks, fun):
+    def make_layer(self, block, in_channels, out_channels, initial_stride, num_blocks, h, fun):
 
         #Create downsample instance
         downsample = None 
@@ -157,12 +157,12 @@ class MiddleNet(nn.Module):
         layers = []
 
         # make first block
-        initial_block = block(in_channels, out_channels, downsample, downsample2, initial_stride, fun)
+        initial_block = block(in_channels, out_channels, downsample, downsample2, initial_stride, h, fun)
         layers.append(initial_block)
 
         # create multiple layers
         for _ in range(1, num_blocks):
-            new_block = block(out_channels, out_channels, fun=fun)
+            new_block = block(out_channels, out_channels, h=h, fun=fun)
             layers.append(new_block) 
         
         return Sequential2(*layers)
