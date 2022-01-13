@@ -146,7 +146,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_lis
     if export_name is not None:
         plt.savefig(export_name)
 
-    model = model.load_state_dict(best_model_wts)
+    model.load_state_dict(best_model_wts)
     return model, time_elapsed
 
 

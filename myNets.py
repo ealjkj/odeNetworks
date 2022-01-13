@@ -3,6 +3,32 @@ from torch import nn
 from torch.nn.modules.conv import Conv2d
 
 
+class MyBasicBlock(nn.Modules):
+    def __init__(self, in_ch, out_ch, stride, downsample):
+        super().__init__()
+        self.conv1 = nn.Conv2d(in_ch, out_ch, kernel_size=3, stride=initial_stride, padding=1)
+        self.bn1 = nn.BatchNorm2d(out_ch)
+        self.act1 = nn.ReLU()
+        self.conv2 = nn.Conv2d(out_ch, out_ch, kernel_size=3, padding=1)
+        self.bn2 = nn.BatchNorm2d(out_ch)
+
+    def forward(self, x):
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = self.relu(out)
+
+        out = self.conv2(out)
+        out = self.bn2(out)
+
+        if self.downsample is not None:
+            identity = self.downsample(x)
+
+        out += identity
+        out = self.relu(out)
+
+        return out
+
+
 class Func(nn.Module):
     def __init__(self, in_ch, out_ch, initial_stride=1):
         super(Func, self).__init__()
@@ -17,7 +43,7 @@ class Func(nn.Module):
         out = self.bn2(self.conv2(out))
         return out
 
-class BottleNeck(nn.Module):
+class Func2(nn.Module):
     def __init__(self, in_ch, out_ch, initial_stride=1):
         super(Func, self).__init__()
         self.conv1 = nn.Conv2d(in_ch, in_ch)
