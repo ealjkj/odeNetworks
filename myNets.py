@@ -3,7 +3,7 @@ from torch import nn
 from torch.nn.modules.conv import Conv2d
 
 
-class MyBasicBlock(nn.Modules):
+class MyBasicBlock(nn.Module):
     def __init__(self, in_ch, out_ch, stride, downsample):
         super().__init__()
         self.conv1 = nn.Conv2d(in_ch, out_ch, kernel_size=3, stride=initial_stride, padding=1)
