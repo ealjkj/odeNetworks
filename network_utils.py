@@ -147,7 +147,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs, datasets_lis
         plt.savefig(export_name)
 
     model.load_state_dict(best_model_wts)
-    return model, time_elapsed
+    return model, time_elapsed, hist_acc_val, hist_loss_val
 
 
 # For updating learning rate
