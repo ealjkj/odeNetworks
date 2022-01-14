@@ -126,6 +126,13 @@ class MiddleNet(nn.Module):
         #FCN
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(512, num_classes)
+
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
+            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
         
 
     def forward(self, x):
@@ -204,6 +211,13 @@ class MyResNet(nn.Module):
         #FCN
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(512, num_classes)
+
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
+            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
         
 
     def forward(self, x):
@@ -256,7 +270,7 @@ class MyResNet(nn.Module):
 
 class RkNet34(nn.Module):
     def __init__(self, num_classes=10, h=1, fun = Func):
-        super(rkNet34, self).__init__()
+        super(RkNet34, self).__init__()
         self.name = 'rkNet'
         self.h = h
         if fun == Func:
@@ -283,10 +297,35 @@ class RkNet34(nn.Module):
         self.fc = nn.Linear(512, num_classes)
         self.act = nn.ReLU()
 
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
+            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+       
+    def forward(self, x):    
+        out = self.conv1(x)  #x1: 64x32x32 -> 64x16x16  
+        out = self.bn1(out)
+        out = self.relu(out)
+        out = self.maxpool(out)
+        
+        #layers 
+        out = self.layer1(out)
+        out = self.layer2(out)
+        out = self.layer3(out)
+        out = self.layer4(out)
+
+        # FCN
+        out = self.avgpool(out)
+        out = torch.flatten(out, 1)
+        out = self.fc(out)
+
+        return out
 
 class RkNet68(nn.Module):
     def __init__(self, num_classes=10, h=1, fun = Func):
-        super(rkNet68, self).__init__()
+        super(RkNet68, self).__init__()
         self.name = 'rkNet'
         self.h = h
         if fun == Func:
@@ -311,12 +350,18 @@ class RkNet68(nn.Module):
         
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(512, num_classes)
-        self.act = nn.ReLU()
+        self.act = nn.ReLU() 
+
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
+            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
         
 
     def forward(self, x):
         
-        h = 1
         out = self.conv1(x)  #x1: 64x32x32 -> 64x16x16  
         out = self.bn1(out)
         out = self.relu(out)
